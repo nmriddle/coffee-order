@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 @Repository
 public class OrderRepository {
@@ -57,11 +58,38 @@ public class OrderRepository {
                     throw new Exception("Condiment type '%s' is not valid".formatted(condiment));
             }
         }
-        int randomId = (int) (Math.random() * 100000);
-        Receipt receipt = new Receipt(beverage.getDescription(), beverage.cost(), randomId);
+        int ID = getNewID();
+        Receipt receipt = new Receipt(beverage.getDescription(), beverage.cost(), ID);
         String data = receipt.id() + "," + receipt.cost() + "," + receipt.description();
         Path path = Paths.get(DATABASE_NAME);
         appendToFile(path, data + NEW_LINE);
         return receipt;
+    }
+
+    public static int getNewID(){
+        Path path = Paths.get(DATABASE_NAME);
+
+        int newId;
+
+        if (Files.exists(path)) {
+            List<String> lines = null;
+            try {
+                lines = Files.readAllLines(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (!lines.isEmpty()) {
+                String lastLine = lines.get(lines.size() - 1);
+                String[] parts = lastLine.split(",");
+                int lastId = Integer.parseInt(parts[0]);
+                newId = lastId + 1;
+            } else {
+                newId = 1; // Start with 1 if the file is empty
+            }
+        } else {
+            newId = 1; // Start with 1 if the file doesn't exist
+        }
+        return newId;
     }
 }
