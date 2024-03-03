@@ -24,6 +24,33 @@ public class OrderRepository {
                 StandardOpenOption.APPEND);
     }
 
+    public static int getNewID() {
+        Path path = Paths.get(DATABASE_NAME);
+
+        int newId;
+
+        if (Files.exists(path)) {
+            List<String> lines = null;
+            try {
+                lines = Files.readAllLines(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (!lines.isEmpty()) {
+                String lastLine = lines.get(lines.size() - 1);
+                String[] parts = lastLine.split(",");
+                int lastId = Integer.parseInt(parts[0]);
+                newId = lastId + 1;
+            } else {
+                newId = 1; // Start with 1 if the file is empty
+            }
+        } else {
+            newId = 1; // Start with 1 if the file doesn't exist
+        }
+        return newId;
+    }
+
     public Receipt add(OrderData order) throws Exception {
         Beverage beverage = null;
         switch (order.beverage().toLowerCase()) {
@@ -35,6 +62,9 @@ public class OrderRepository {
                 break;
             case "house blend":
                 beverage = new HouseBlend();
+                break;
+            case "decaf":
+                beverage = new Decaf();
                 break;
         }
         if (beverage == null) {
@@ -64,32 +94,5 @@ public class OrderRepository {
         Path path = Paths.get(DATABASE_NAME);
         appendToFile(path, data + NEW_LINE);
         return receipt;
-    }
-
-    public static int getNewID(){
-        Path path = Paths.get(DATABASE_NAME);
-
-        int newId;
-
-        if (Files.exists(path)) {
-            List<String> lines = null;
-            try {
-                lines = Files.readAllLines(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (!lines.isEmpty()) {
-                String lastLine = lines.get(lines.size() - 1);
-                String[] parts = lastLine.split(",");
-                int lastId = Integer.parseInt(parts[0]);
-                newId = lastId + 1;
-            } else {
-                newId = 1; // Start with 1 if the file is empty
-            }
-        } else {
-            newId = 1; // Start with 1 if the file doesn't exist
-        }
-        return newId;
     }
 }
