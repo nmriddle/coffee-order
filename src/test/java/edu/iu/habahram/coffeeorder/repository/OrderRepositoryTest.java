@@ -211,4 +211,24 @@ class OrderRepositoryTest {
         }
     }
 
+    @Test
+    void darkRoastMochaMocha() {
+        try {
+            Receipt receipt = orderRepository.add(new OrderData("Dark Roast", Arrays.asList("Mocha","Mocha")));
+            assertEquals(receipt.cost(), 2.59, 0.0001);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void darkRoastWhipMocha() {
+        try {
+            Receipt receipt = orderRepository.add(new OrderData("Dark Roast", Arrays.asList("Mocha","Whip")));
+            assertEquals(receipt.cost(), 2.54, 0.0001);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
