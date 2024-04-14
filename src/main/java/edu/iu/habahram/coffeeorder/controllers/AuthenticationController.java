@@ -33,7 +33,6 @@ public class AuthenticationController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println();
     }
 
     @PostMapping("/signin")
