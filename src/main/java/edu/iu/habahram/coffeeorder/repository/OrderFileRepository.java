@@ -26,7 +26,7 @@ public class OrderFileRepository {
 
     public static int getNewID() {
         Path path = Paths.get(DATABASE_NAME);
-
+        System.out.println();
         int newId;
 
         if (Files.exists(path)) {
@@ -88,7 +88,8 @@ public class OrderFileRepository {
                     throw new Exception("Condiment type '%s' is not valid".formatted(condiment));
             }
         }
-        int ID = getNewID();
+//        int ID = getNewID();
+        int ID = (int) (Math.random() * 100000);
         Receipt receipt = new Receipt(beverage.getDescription(), beverage.cost(), ID);
 //        String data = receipt.getId() + "," + receipt.getCost() + "," + receipt.getDescription();
 //        Path path = Paths.get(DATABASE_NAME);
