@@ -2,6 +2,7 @@ package edu.iu.habahram.coffeeorder.controllers;
 
 
 import edu.iu.habahram.coffeeorder.model.Customer;
+import edu.iu.habahram.coffeeorder.repository.CustomerFileRepository;
 import edu.iu.habahram.coffeeorder.repository.CustomerRepository;
 import edu.iu.habahram.coffeeorder.security.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,10 +21,10 @@ public class AuthenticationController {
     CustomerRepository customerRepository;
 
     public AuthenticationController(AuthenticationManager authenticationManager, TokenService tokenService, CustomerRepository
-            customerRepository) {
+            customerFileRepository) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
-        this.customerRepository = customerRepository;
+        this.customerRepository = customerFileRepository;
     }
 
     @PostMapping("/signup")
@@ -35,15 +36,15 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
 
     public String login(@RequestBody Customer customer) {
 
         Authentication authentication = authenticationManager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                customer.username(),
-                                customer.password()));
+                                customer.getUsername(),
+                                customer.getPassword()));
         return tokenService.generateToken(authentication);
     }
 }
