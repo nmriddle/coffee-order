@@ -2,6 +2,7 @@ package edu.iu.habahram.coffeeorder.security;
 
 import edu.iu.habahram.coffeeorder.model.Customer;
 import edu.iu.habahram.coffeeorder.repository.CustomerFileRepository;
+import edu.iu.habahram.coffeeorder.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,16 +11,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserDetailsSecurityService implements UserDetailsService {
-    CustomerFileRepository customerFileRepository;
+    CustomerRepository customerRepository;
 
-    public UserDetailsSecurityService(CustomerFileRepository customerFileRepository) {
-        this.customerFileRepository = customerFileRepository;
+    public UserDetailsSecurityService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Customer customer = customerFileRepository.findByUsername(username);
+            Customer customer = customerRepository.findByUsername(username);
             if (customer == null) {
                 throw new UsernameNotFoundException("");
             }
