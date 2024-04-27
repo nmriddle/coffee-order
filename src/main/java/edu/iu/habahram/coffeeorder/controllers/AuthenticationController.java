@@ -22,10 +22,10 @@ public class AuthenticationController {
     CustomerRepository customerRepository;
 
     public AuthenticationController(AuthenticationManager authenticationManager, TokenService tokenService, CustomerRepository
-            customerFileRepository) {
+            customerRepository) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
-        this.customerRepository = customerFileRepository;
+        this.customerRepository = customerRepository;
     }
 
     @PostMapping("/signup")
