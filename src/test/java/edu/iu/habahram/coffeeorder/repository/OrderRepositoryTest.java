@@ -81,15 +81,15 @@ class OrderRepositoryTest {
 //        }
 //    }
 //
-//    @Test
-//    void espressoMocha() {
+    @Test
+    void espressoMocha() {
 //        try {
 //            Receipt receipt = orderFileRepository.add(new OrderData("Espresso", Arrays.asList("Mocha")));
 //            assertEquals(receipt.cost(), 1.64, 0.0001);
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-//    }
+    }
 //
 //    @Test
 //    void houseBlendMilk() {
